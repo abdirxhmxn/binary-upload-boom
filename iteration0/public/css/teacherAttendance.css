@@ -87,6 +87,7 @@ a {
 
 .month-buttons {
   display: flex;
+  justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px;
   margin: 10px 0 16px;

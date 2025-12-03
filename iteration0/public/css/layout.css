@@ -20,12 +20,20 @@ body {
 }
 
 .logo-btn {
-  background: linear-gradient(135deg, #2f855a, #3ca870);
-  color: #fff;
+  background: transparent;
   border: none;
+  padding: 0;
+}
+
+.logo-img {
+  width: 44px;
+  height: 44px;
   border-radius: 10px;
-  padding: 8px 10px;
-  font-size: 1.4rem;
+  object-fit: contain;
+  background: #fff;
+  padding: 6px;
+  border: 1px solid #d6e9dd;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
 }
 
 .greeting h3 {

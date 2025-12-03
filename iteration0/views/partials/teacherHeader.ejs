@@ -1,7 +1,9 @@
 <link rel="stylesheet" href="/css/layout.css">
 <header class="header-bar">
     <div class="header-left">
-        <button class="logo-btn">ب</button>
+        <button class="logo-btn">
+            <img src="/imgs/finalLogo.jpg" alt="IlmQuest" class="logo-img">
+        </button>
         <div class="greeting">
             <h3>Assalāmu ʿalaykum,</h3>
             <h2><%= `${user.firstName || ""} ${user.lastName || ""}`.trim() || "Teacher" %></h2>

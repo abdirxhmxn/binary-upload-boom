@@ -134,32 +134,67 @@ module.exports = {
   },
   getTeacherAttendance: async (req, res) => {
     try {
-      const classes = await Class.find({ 'teachers._id': req.user._id }).lean();
-      const students = classes.flatMap(cls => cls.students);
-      const selectedYear = parseInt(req.query.year, 10) || new Date().getFullYear();
-      const attendance = await Attendance.find().lean();
+      // 1. Get teacher's classes (with students populated if needed)
+      const classes = await Class.find({ 'teachers._id': req.user._id })
+        .select('className students classCode _id') // only what you need
+        .lean();
 
+      if (classes.length === 0) {
+        return res.render('teacher/teacherAttendance', {
+          user: req.user,
+          classes: [],
+          months: [],
+          selectedYear: new Date().getFullYear(),
+          attendance: []
+        });
+      }
+
+      const classIds = classes.map(c => c._id);
+      const selectedYear = parseInt(req.query.year, 10) || new Date().getFullYear();
+
+      // 2. Only fetch attendance for THIS teacher's classes + selected year
+      const startDate = new Date(`${selectedYear}-01-01`);
+      const endDate = new Date(`${selectedYear}-12-31`);
+
+      const attendance = await Attendance.find({
+        classId: { $in: classIds },
+        date: { $gte: startDate, $lte: endDate }
+      }).lean();
+
+      // 3. Pre-build a fast lookup map (BEST PRACTICE — makes EJS 100x faster)
+      const attendanceMap = {};
+
+      attendance.forEach(doc => {
+        const dateKey = doc.date.toISOString().slice(0, 10); // "2025-12-15"
+        doc.records.forEach(r => {
+          const key = `${doc.classId}_${dateKey}_${r.studentId}`;
+          attendanceMap[key] = r.status;
+        });
+      });
+
+      // 4. Generate months
       const months = Array.from({ length: 12 }, (_, i) => {
         const days = new Date(selectedYear, i + 1, 0).getDate();
         return {
-          name: new Date(selectedYear, i).toLocaleString("en-US", { month: "long" }),
+          name: new Date(selectedYear, i).toLocaleString('en-US', { month: 'long' }),
           index: i,
           days
         };
       });
-      console.log(months)
-      res.render('teacher/teacherAttendance.ejs', {
+
+      // 5. Render with clean, fast data
+      res.render('teacher/teacherAttendance', {
         user: req.user,
         classes,
-        students,
-        attendance,
         months,
-        selectedYear
+        selectedYear,
+        attendanceMap,     // ← This is the magic
+        // Remove: attendance, students (not needed anymore)
       });
-    }
-    catch (err) {
-      console.error(err);
-      res.send("Error loading attendance");
+
+    } catch (err) {
+      console.error('Attendance load error:', err);
+      res.status(500).render('error', { message: 'Failed to load attendance' });
     }
   },
   getParent: async (req, res) => {

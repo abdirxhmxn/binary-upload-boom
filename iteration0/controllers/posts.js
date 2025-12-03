@@ -382,8 +382,7 @@ module.exports = {
       const classDoc = await Class.findById(classId);
       const studentDoc = await User.findById(studentId);
 
-      const targetDate = new Date(date);
-      targetDate.setHours(0, 0, 0, 0);
+      let targetDate = new Date(date + 'T00:00:00Z');  
 
       const studentName = `${studentDoc.firstName} ${studentDoc.lastName}`;
       const teacherName = `${req.user.firstName || ""} ${req.user.lastName || ""}`.trim() || req.user.userName;
