@@ -382,7 +382,7 @@ module.exports = {
       const classDoc = await Class.findById(classId);
       const studentDoc = await User.findById(studentId);
 
-      let targetDate = new Date(date + 'T00:00:00Z');  
+      let targetDate = new Date(date + 'T00:00:00Z');
 
       const studentName = `${studentDoc.firstName} ${studentDoc.lastName}`;
       const teacherName = `${req.user.firstName || ""} ${req.user.lastName || ""}`.trim() || req.user.userName;
@@ -633,6 +633,31 @@ module.exports = {
 
       console.log("User deleted");
       res.redirect("/admin/users");
+
+    } catch (err) {
+      console.error(err);
+      return res.status(500).send(err.message || "Error deleting user");
+    }
+  },
+  deleteClass: async (req, res) => {
+    try {
+      // Find user by id
+      let classID = req.params.id
+      console.log(classID)
+      const classDelete = await Class.findById(classID);
+      console.log(classDelete)
+
+      //to prevent other users from being able to delete
+      if (req.user.role !== "admin") {
+        return res.status(403).send("Unauthorized");
+      }
+
+
+      // Delete  user
+      await Class.findByIdAndDelete(classID);
+
+      console.log("class deleted");
+      res.redirect("/admin/classes");
 
     } catch (err) {
       console.error(err);

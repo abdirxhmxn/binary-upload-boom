@@ -1,431 +1,429 @@
 <%- include('../partials/inHeader') -%>
-    <style>
-        .missions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
 
-        .mission-card {
-            background: #ffffff;
-            border-radius: 15px;
-            padding: 20px;
-            border: 1px solid #d7dce1;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
-            transition: 0.2s ease-in-out;
-        }
+<style>
+  :root {
+    --green-900: #0f3d2e;
+    --green-800: #145239;
+    --green-700: #1b6b46;
+    --green-600: #059669;
+    --green-100: #ecfdf5;
+    --green-50:  #f0fdf4;
+    --gray-900:  #1f2937;
+    --gray-600:  #4b5563;
+    --gray-200:  #e5e7eb;
+    --gray-100:  #f3f4f6;
+    --white:     #ffffff;
+    --shadow-sm: 0 8px 20px rgba(15,61,46,0.08);
+    --shadow-md: 0 14px 34px rgba(15,61,46,0.12);
+    --radius:    16px;
+  }
 
-        .mission-card:hover {
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-            transform: translateY(-3px);
-        }
+  body {
+    background-color: #FCF8F5;
+    background-image: repeating-linear-gradient(135deg, rgba(20,82,57,0.03) 0px, rgba(20,82,57,0.03) 20px, transparent 20px, transparent 40px),
+                      repeating-linear-gradient(45deg, rgba(20,82,57,0.02) 0px, rgba(20,82,57,0.02) 18px, transparent 18px, transparent 36px);
+    color: var(--gray-900);
+    min-height: 100vh;
+  }
 
-        .mission-title {
-            font-size: 20px;
-            font-weight: bold;
-            color: #1b2a4e;
-            margin-bottom: 8px;
-        }
+  main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+  }
 
-        .mission-desc {
-            font-size: 14px;
-            color: #444;
-            margin-bottom: 12px;
-        }
+  /* ===== HERO HEADER ===== */
+  .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .page-title {
+    font-size: 3.2rem;
+    font-weight: 900;
+    background: linear-gradient(90deg, var(--green-900), var(--green-600));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+  }
+  .user-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    background: white;
+    padding: 1rem 2rem;
+    border-radius: 100px;
+    box-shadow: var(--shadow-sm);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--green-800);
+    border: 2px solid var(--green-100);
+  }
+  .user-badge i { font-size: 1.6rem; color: var(--green-600); }
 
-        .mission-info p {
-            font-size: 14px;
-            margin: 2px 0;
-        }
+  /* ===== RANK FILTER ===== */
+  .rank-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    justify-content: center;
+    margin: 2.5rem 0;
+  }
+  .rank-btn {
+    padding: 0.75rem 1.4rem;
+    border: 2px solid var(--green-800);
+    background: white;
+    color: var(--green-800);
+    font-weight: 700;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .rank-btn.active, .rank-btn:hover {
+    background: var(--green-800);
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(20,82,57,0.25);
+  }
 
-        .mission-footer {
-            font-size: 12px;
-            color: #666;
-            margin-top: 12px;
-            border-top: 1px solid #eee;
-            padding-top: 8px;
-        }
+  /* ===== MISSIONS GRID ===== */
+  .missions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.8rem;
+    margin: 3rem 0;
+  }
+  .mission-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 1.8rem;
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(14,159,110,0.15);
+    transition: all 0.3s ease;
+  }
+  .mission-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(15,61,46,0.18);
+  }
+  .mission-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--green-900);
+    margin-bottom: 0.6rem;
+  }
+  .mission-desc {
+    color: var(--gray-600);
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+  .mission-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+  .tag {
+    background: var(--green-100);
+    color: var(--green-800);
+    padding: 0.35rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .select-mission {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 0.9rem;
+    background: var(--green-800);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .select-mission:hover {
+    background: var(--green-900);
+    transform: translateY(-2px);
+  }
 
-        .select-mission {
-            height: 50px;
-            float: right;
-            cursor: pointer;
-        }
+  /* ===== TABLES ===== */
+  .section-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--green-900);
+    margin: 4rem 0 1.5rem;
+    text-align: center;
+  }
+  .missions-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: white;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 3rem;
+  }
+  .missions-table thead {
+    background: linear-gradient(90deg, var(--green-800), var(--green-700));
+    color: white;
+  }
+  .missions-table th,
+  .missions-table td {
+    padding: 1.2rem 1rem;
+    text-align: left;
+  }
+  .missions-table tbody tr {
+    transition: background 0.2s;
+  }
+  .missions-table tbody tr:hover {
+    background: var(--green-50);
+  }
+  .missions-table .complete-btn {
+    background: var(--green-600);
+    color: white;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .missions-table .complete-btn:hover {
+    background: var(--green-700);
+  }
 
-        .rank {
-            padding: 8px 14px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            background: #f5f5f5;
-            font-size: 14px;
-            cursor: pointer;
-            margin-right: 6px;
-        }
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+  }
+  .modal {
+    background: white;
+    width: 90%;
+    max-width: 560px;
+    border-radius: var(--radius);
+    padding: 2.5rem;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+    position: relative;
+    animation: modalPop 0.4s ease;
+  }
+  @keyframes modalPop {
+    from { opacity: 0; transform: scale(0.9); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  .close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #dc2626;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+  }
+  .begin-btn {
+    background: var(--green-800);
+    color: white;
+    padding: 1rem 2.5rem;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    margin: 1.5rem 0;
+  }
+  .begin-btn:hover {
+    background: var(--green-900);
+  }
 
-        .rank.active-rank {
-            background: #1b2a4e;
-            color: white;
-            border-color: #1b2a4e;
-        }
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .page-title { font-size: 2.6rem; }
+    .user-badge { flex-direction: column; padding: 1.2rem; }
+    .missions-grid { grid-template-columns: 1fr; }
+  }
+</style>
 
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.55);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-        }
+<main>
+  <!-- Hero Header -->
+  <div class="page-header">
+    <h1 class="page-title">My Missions</h1>
+    <div class="user-badge">
+      <span><i class="fas fa-user-graduate"></i> <%= user.firstName %> <%= user.lastName %></span>
+      <span><i class="fas fa-medal"></i> <%= user.rank %> Rank</span>
+      <span><i class="fas fa-star"></i> <%= user.points %> Points</span>
+    </div>
+  </div>
 
-        .modal {
-            background: white;
-            padding: 25px;
-            width: 90%;
-            max-width: 500px;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.25);
-            animation: fadeIn 0.2s ease-in-out;
-        }
+  <!-- Rank Filter -->
+  <div class="rank-filter">
+    <button class="rank-btn active" data-rank="F">F Rank</button>
+    <button class="rank-btn" data-rank="E">E Rank</button>
+    <button class="rank-btn" data-rank="D">D Rank</button>
+    <button class="rank-btn" data-rank="C">C Rank</button>
+    <button class="rank-btn" data-rank="B">B Rank</button>
+    <button class="rank-btn" data-rank="A">A Rank</button>
+    <button class="rank-btn" data-rank="S">S Rank</button>
+  </div>
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(15px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .close-btn {
-            float: right;
-            cursor: pointer;
-            background: #c62828;
-            color: white;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 6px;
-        }
-
-        .begin-btn {
-            float: right;
-            cursor: pointer;
-            background: #28b442;
-            color: white;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 6px;
-        }
-
-        .missions-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            font-size: 14px;
-            background: #fff;
-            border: 1px solid #d7dce1;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        .missions-table thead {
-            background: #1b2a4e;
-            color: white;
-            text-align: left;
-        }
-
-        .missions-table th {
-            padding: 12px;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-        }
-
-        .missions-table td {
-            padding: 12px;
-            border-bottom: 1px solid #e5e5e5;
-        }
-
-        .missions-table tr:nth-child(even) {
-            background: #f8f9fc;
-        }
-
-
-        .missions-table tbody td {
-            color: #333;
-        }
-
-        .empty-row {
-            text-align: center;
-            padding: 20px;
-            color: #555;
-            font-style: italic;
-        }
-
-        .hidden {
-            display: none;
-        }
-    </style>
-
-    <main>
-        <h1>My Missions</h1>
-        <!-- include current user rank and  current points and current year-->
-        <div class="header">
-            <h1>
-                <%=user.firstName%>
-                    <%=user.lastName%>
-            </h1>
-            <h3>
-                <%=user.rank%> Rank
-            </h3>
-            <h3>Points: <%=user.points%>
-            </h3>
+  <!-- Available Missions -->
+  <div class="missions-grid">
+    <% missions.forEach(mission => { %>
+      <div class="mission-card" data-rank="<%= mission.rank %>">
+        <button class="select-mission"
+          data-id="<%= mission._id %>"
+          data-title="<%= mission.title %>"
+          data-desc="<%= mission.description %>"
+          data-type="<%= mission.type %>"
+          data-cat="<%= mission.category %>"
+          data-rank="<%= mission.rank %>"
+          data-xp="<%= mission.pointsXP %>"
+          data-time="<%= mission.timeLimit %>"
+          data-creator="<%= mission.createdBy.name %>">
+          Select Mission
+        </button>
+        <div class="mission-title"><%= mission.title %></div>
+        <div class="mission-desc"><%= mission.description %></div>
+        <div class="mission-tags">
+          <span class="tag"><%= mission.type %></span>
+          <span class="tag"><%= mission.category %></span>
+          <span class="tag"><%= mission.rank %> Rank</span>
+          <span class="tag">+<%= mission.pointsXP %> XP</span>
         </div>
-        <!-- Banner for the mission categories to allow filtering for user selection filters will include ranks as well -->
-        <!-- display missions and allow user to select -->
-        <div>
-            <button class="rank">F Rank</button>
-            <button class="rank">E Rank</button>
-            <button class="rank">D Rank</button>
-            <button class="rank">C Rank</button>
-            <button class="rank">B Rank</button>
-            <button class="rank">A Rank</button>
-            <button class="rank">S Rank</button>
-        </div>
+        <small style="color:#6b7280;">by <%= mission.createdBy.name %></small>
+      </div>
+    <% }) %>
+  </div>
 
-        <div class="missions-grid">
+  <!-- Active Missions -->
+  <h2 class="section-title"><i class="fas fa-running"></i> Active Missions</h2>
+  <table class="missions-table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Rank</th>
+        <th>XP</th>
+        <th>Due</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (activeMissions && activeMissions.length > 0) { %>
+        <% activeMissions.forEach(mission => { %>
+          <tr>
+            <td><strong><%= mission.title %></strong></td>
+            <td><%= mission.description %></td>
+            <td><%= mission.rank %></td>
+            <td>+<%= mission.pointsXP %> XP</td>
+            <td><%= mission.dueDate ? mission.dueDate.toDateString() : "No limit" %></td>
+            <td>
+              <form method="POST" action="/student/missions/complete?_method=PUT" style="display:inline;">
+                <input type="hidden" name="missionId" value="<%= mission._id %>">
+                <button type="submit" class="complete-btn">Complete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      <% } else { %>
+        <tr><td colspan="6" style="text-align:center; padding:2rem; color:#6b7280;">No active missions — choose one above!</td></tr>
+      <% } %>
+    </tbody>
+  </table>
 
-            <% missions.forEach(mission=> { %>
+  <!-- Leaderboard -->
+  <h2 class="section-title"><i class="fas fa-trophy"></i> Leaderboard</h2>
+  <table class="missions-table">
+    <thead>
+      <tr>
+        <th>Position</th>
+        <th>Student</th>
+        <th>Rank</th>
+        <th>Points</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (students && students.length > 0) { %>
+        <% students.forEach((student, i) => { %>
+          <tr <%= student._id.toString() === user._id.toString() ? 'style="background:#d1fae5 !important; font-weight:600;"' : '' %>>
+            <td><%= i + 1 %></td>
+            <td><%= student.firstName %> <%= student.lastName %> <%= student._id.toString() === user._id.toString() ? '(You)' : '' %></td>
+            <td><%= student.rank %></td>
+            <td><%= student.points %></td>
+          </tr>
+        <% }) %>
+      <% } else { %>
+        <tr><td colspan="4" style="text-align:center; padding:2rem;">No students yet</td></tr>
+      <% } %>
+    </tbody>
+  </table>
+</main>
 
-                <div class="mission-card" data-rank="<%= mission.rank %>" style="display: none;">
-                    <button class="select-mission" data-title="<%= mission.title %>" data-id="<%= mission._id %>"
-                        data-desc="<%= mission.description %>" data-type="<%= mission.type %>"
-                        data-cat="<%= mission.category %>" data-rank="<%= mission.rank %>"
-                        data-xp="<%= mission.pointsXP %>" data-time="<%= mission.timeLimit %>"
-                        data-creator="<%= mission.createdBy.name %>">
-                        Select
-                    </button>
-                    <div class="mission-title">
-                        <%= mission.title %>
-                    </div>
+<!-- Modal -->
+<div class="modal-overlay" id="missionModal">
+  <div class="modal">
+    <button class="close-btn" id="closeModal">X</button>
+    <h2 id="modalTitle" style="color:var(--green-900); margin-top:0;"></h2>
+    <p id="modalDescription" style="color:var(--gray-600);"></p>
+    <div style="margin:1.5rem 0; display:grid; gap:0.6rem; text-align:left;">
+      <p><strong>Type:</strong> <span id="modalType"></span></p>
+      <p><strong>Category:</strong> <span id="modalCategory"></span></p>
+      <p><strong>Rank:</strong> <span id="modalRank"></span></p>
+      <p><strong>XP Reward:</strong> <span id="modalXP"></span></p>
+      <p><strong>Time Limit:</strong> <span id="modalTime"></span></p>
+      <p><strong>Created By:</strong> <span id="modalCreator"></span></p>
+    </div>
+    <form id="beginForm" method="POST" action="/student/missions/begin?_method=PUT">
+      <input type="hidden" name="missionId" id="beginMissionId">
+      <button type="submit" class="begin-btn">Begin Mission</button>
+    </form>
+  </div>
+</div>
 
-                    <div class="mission-desc">
-                        <%= mission.description %>
-                    </div>
+<script>
+  const modal = document.getElementById("missionModal");
+  const closeModal = document.getElementById("closeModal");
 
-                    <div class="mission-info">
-                        <p><strong>Type:</strong>
-                            <%= mission.type %>
-                        </p>
-                        <p><strong>Category:</strong>
-                            <%= mission.category %>
-                        </p>
-                        <p><strong>Rank:</strong>
-                            <%= mission.rank %>
-                        </p>
-                        <p><strong>XP:</strong>
-                            <%= mission.pointsXP %>
-                        </p>
-                        <p><strong>Time Limit:</strong>
-                            <%= mission.timeLimit %>
-                        </p>
-                    </div>
+  document.querySelectorAll('.select-mission').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.getElementById('modalTitle').textContent = btn.dataset.title;
+      document.getElementById('modalDescription').textContent = btn.dataset.desc;
+      document.getElementById('modalType').textContent = btn.dataset.type;
+      document.getElementById('modalCategory').textContent = btn.dataset.cat;
+      document.getElementById('modalRank').textContent = btn.dataset.rank;
+      document.getElementById('modalXP').textContent = btn.dataset.xp;
+      document.getElementById('modalTime').textContent = btn.dataset.time;
+      document.getElementById('modalCreator').textContent = btn.dataset.creator;
+      document.getElementById('beginMissionId').value = btn.dataset.id;
+      modal.style.display = "flex";
+    });
+  });
 
-                    <div class="mission-footer">
-                        Created by <strong>
-                            <%= mission.createdBy.name %>
-                        </strong>
-                    </div>
+  closeModal.onclick = () => modal.style.display = "none";
+  window.onclick = e => { if (e.target === modal) modal.style.display = "none"; };
 
-                </div>
+  // Rank filtering
+  document.querySelectorAll('.rank-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.rank-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const rank = btn.dataset.rank;
+      document.querySelectorAll('.mission-card').forEach(card => {
+        card.style.display = (rank === 'all' || card.dataset.rank === rank) ? 'block' : 'none';
+      });
+    });
+  });
+</script>
 
-                <% }) %>
-        </div>
-        <div class="modal-overlay" id="missionModal">
-            <div class="modal">
-                <button class="close-btn" id="closeModal">Close</button>
-
-                <form id="beginForm" method="POST" action="/student/missions/begin?_method=PUT">
-                    <input type="hidden" name="missionId" id="beginMissionId">
-                    <button type="submit" class="begin-btn">Begin</button>
-                </form>
-                <h2 id="modalTitle"></h2>
-                <p id="modalDescription"></p>
-                <div>
-                    <p><strong>Type:</strong> <span id="modalType"></span></p>
-                    <p><strong>Category:</strong> <span id="modalCategory"></span></p>
-                    <p><strong>Rank:</strong> <span id="modalRank"></span></p>
-                    <p><strong>XP:</strong> <span id="modalXP"></span></p>
-                    <p><strong>Time Limit:</strong> <span id="modalTime"></span></p>
-                    <p><strong>Created By:</strong> <span id="modalCreator"></span></p>
-                </div>
-            </div>
-        </div>
-
-        <div>
-            <h2>Active Missions:</h2>
-            <table class="missions-table">
-                <thead>
-                    <tr>
-                        <th>Title</th>
-                        <th>Description</th>
-                        <th>Rank</th>
-                        <th>Points</th>
-                        <th>Time Limit</th>
-                        <th>Due Date</th>
-                        <th>Complete</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <% if (activeMissions && activeMissions.length> 0) { %>
-
-                        <% activeMissions.forEach(mission=> { %>
-                            <tr>
-                                <td>
-                                    <%= mission.title %>
-                                </td>
-                                <td>
-                                    <%= mission.description %>
-                                </td>
-                                <td>
-                                    <%= mission.rank %>
-                                </td>
-                                <td>
-                                    <%= mission.pointsXP %>
-                                </td>
-                                <td>
-                                    <%= mission.timeLimit %>
-                                </td>
-                                <td>
-                                    <%= mission.dueDate ? mission.dueDate.toDateString() : "None" %>
-                                </td>
-                                <td>
-                                    <form method="POST" action="/student/missions/complete?_method=PUT">
-                                        <input type="hidden" name="missionId" value="<%= mission._id %>">
-                                        <button type="submit" class="begin-btn">Complete</button>
-                                    </form>
-
-                                </td>
-                            </tr>
-                            <% }) %>
-
-                                <% } else { %>
-                                    <tr>
-                                        <td colspan="6" style="text-align:center; padding:10px;">
-                                            No active missions yet
-                                        </td>
-                                    </tr>
-                                    <% } %>
-                </tbody>
-            </table>
-
-        </div>
-
-        <!-- live missions vs pending missions -->
-        <!-- live missions are missions they are currently working on -->
-        <!-- pending missions are missions waiting to be approved and upon approval they will earn their points -->
-        <!-- have a leaderboard button that takes them to the leaderboard page  -->
-        <!-- leaderboard -->
-        <div>
-            <h2>Leaderboard</h2>
-            <table class="missions-table">
-                <thead>
-                    <tr>
-                        <th>Position</th>
-                        <th>Student</th>
-                        <th>Rank</th>
-                        <th>Points</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    <% if (students && students.length> 0) { %>
-                        <% students.forEach((student, index)=> { %>
-                            <tr>
-                                <td>
-                                    <%= index + 1 %>
-                                </td> <!-- Position -->
-                                <td>
-                                    <%= student.firstName %>
-                                        <%= student.lastName %>
-                                </td> <!-- Student -->
-                                <td>
-                                    <%= student.rank %>
-                                </td> <!-- Rank -->
-                                <td>
-                                    <%= student.points %>
-                                </td> <!-- Points -->
-                            </tr>
-                            <% }) %>
-                                <% } else { %>
-                                    <tr>
-                                        <td colspan="4" style="text-align:center; padding:10px;">
-                                            No students found
-                                        </td>
-                                    </tr>
-                                    <% } %>
-                </tbody>
-            </table>
-
-        </div>
-    </main>
-    <script>
-        const modal = document.getElementById("missionModal");
-        const closeModal = document.getElementById("closeModal");
-        const beginForm = document.getElementById("beginForm");
-        const beginMissionId = document.getElementById("beginMissionId");
-
-        const modalTitle = document.getElementById("modalTitle");
-        const modalDescription = document.getElementById("modalDescription");
-        const modalType = document.getElementById("modalType");
-        const modalCategory = document.getElementById("modalCategory");
-        const modalRank = document.getElementById("modalRank");
-        const modalXP = document.getElementById("modalXP");
-        const modalTime = document.getElementById("modalTime");
-        const modalCreator = document.getElementById("modalCreator");
-
-        // rank filter (what you already had)
-        const rankButtons = document.querySelectorAll('.rank');
-        const missionCards = document.querySelectorAll('.missions-grid .mission-card');
-
-        rankButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const selectedRank = btn.innerText.trim().split(" ")[0];
-                rankButtons.forEach(b => b.classList.remove('active-rank'));
-                btn.classList.add('active-rank');
-
-                missionCards.forEach(card => {
-                    const cardRank = card.dataset.rank;
-                    card.style.display = (cardRank === selectedRank) ? "block" : "none";
-                });
-            });
-        });
-
-        // modal + form wiring
-        document.querySelectorAll('.select-mission').forEach(btn => {
-            btn.addEventListener('click', () => {
-                // fill modal text
-                modalTitle.innerText = btn.dataset.title;
-                modalDescription.innerText = btn.dataset.desc;
-                modalType.innerText = btn.dataset.type;
-                modalCategory.innerText = btn.dataset.cat;
-                modalRank.innerText = btn.dataset.rank;
-                modalXP.innerText = btn.dataset.xp;
-                modalTime.innerText = btn.dataset.time;
-                modalCreator.innerText = btn.dataset.creator;
-
-                // this is what your backend expects
-                beginMissionId.value = btn.dataset.id;
-
-                modal.style.display = "flex";
-            });
-        });
-        closeModal.addEventListener('click', () => {
-            modal.style.display = "none";
-        });
-    </script>
-    <%- include('../partials/inFooter') -%>
+<%- include('../partials/inFooter') -%>

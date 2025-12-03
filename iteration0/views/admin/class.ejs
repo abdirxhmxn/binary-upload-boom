@@ -435,7 +435,7 @@
               <td>
                 <button class="action-btn" type="button">Edit</button>
                 <% if(user.role==="admin" ) { %>
-                  <form action="/admin/classes/delete?_method=DELETE" method="POST" style="display:inline;">
+                  <form action="/admin/classes/delete/<%= c._id %>?_method=DELETE" method="POST" style="display:inline;">
                     <input type="hidden" name="classID" value="<%= c._id %>">
                     <button class="action-btn" type="submit">Delete</button>
                   </form>

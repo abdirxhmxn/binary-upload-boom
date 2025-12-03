@@ -50,7 +50,7 @@ router.put("/student/missions/complete", ensureAuth, postsController.completeStu
 
 // --- DELETE ---
 router.delete("/admin/users/:id", ensureAuth, postsController.deleteUser);
-
+router.delete("/admin/classes/delete/:id", ensureAuth, postsController.deleteClass);
 // =============================================
 // 5. TEACHER ROUTES
 // =============================================
